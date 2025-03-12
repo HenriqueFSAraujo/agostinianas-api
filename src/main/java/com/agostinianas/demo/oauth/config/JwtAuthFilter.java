@@ -1,5 +1,6 @@
 package com.agostinianas.demo.oauth.config;
 
+
 import com.agostinianas.demo.core.exception_handler.Problem;
 import com.agostinianas.demo.core.exception_handler.ProblemType;
 import com.agostinianas.demo.oauth.domain.service.JwtService;
@@ -13,8 +14,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,10 +42,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Value("${montreal.oauth.encryptSecretKey}")
     private  String encryptSecretKey;
 
-    private final JwtService jwtService;
-    private final UserDetailsServiceImpl userDetailsServiceImpl;
-    private final ObjectMapper objectMapper;
+    @Value("${montreal.oauth.jwtSecret}")
+    private String jwtSecret;
 
+    @Autowired
     public JwtAuthFilter(JwtService jwtService,
                          UserDetailsServiceImpl userDetailsServiceImpl,
                          ObjectMapper objectMapper) {
@@ -50,6 +53,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         this.userDetailsServiceImpl = userDetailsServiceImpl;
         this.objectMapper = objectMapper;
     }
+
+    private final JwtService jwtService;
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private final ObjectMapper objectMapper;
+
 
     @Override
 
@@ -79,35 +87,35 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         } catch (ExpiredJwtException ex) {
 
-//            Problem problem = buildProblem(ex, ProblemType.TOKEN_INVALIDOS,
-//                    HttpStatus.UNAUTHORIZED.value(),
-//                    MSG_ERROR_TOKEN_EXPIRED);
-//
-//            handler(response, problem);
+            Problem problem = buildProblem(ex, ProblemType.TOKEN_INVALIDOS,
+                    HttpStatus.UNAUTHORIZED.value(),
+                    MSG_ERROR_TOKEN_EXPIRED);
+
+            handler(response, problem);
 
         } catch (Exception ex) {
 
-//            Problem problem = buildProblem(ex, ProblemType.ERRO_DE_SISTEMA,
-//                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
-//                    MSG_ERROR_GENERIC);
-//
-//            handler(response, problem);
+            Problem problem = buildProblem(ex, ProblemType.ERRO_DE_SISTEMA,
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                    MSG_ERROR_GENERIC);
+
+            handler(response, problem);
 
         }
 
     }
 
-//    private static Problem buildProblem(Exception ex, ProblemType problemType, Integer status, String userMessage) {
-//
-//        return Problem.builder()
-//                .status(status)
-//                .type(problemType.getUri())
-//                .title(problemType.getTitle())
-//                .detail(ex.getMessage())
-//                .userMessage(userMessage)
-//                .timestamp(OffsetDateTime.now())
-//                .build();
-//    }
+    private static Problem buildProblem(Exception ex, ProblemType problemType, Integer status, String userMessage) {
+
+        return Problem.builder()
+                .status(status)
+                .type(problemType.getUri())
+                .title(problemType.getTitle())
+                .detail(ex.getMessage())
+                .userMessage(userMessage)
+                .timestamp(OffsetDateTime.now())
+                .build();
+    }
 
     private void handler(HttpServletResponse response, Problem problem) throws IOException {
 

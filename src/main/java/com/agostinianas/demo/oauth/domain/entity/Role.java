@@ -19,7 +19,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name = "roles")
+@Table(name = "role")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Role {
@@ -32,13 +32,5 @@ public class Role {
     @Column(length = 20)
     private RoleEnum name;
 
-    @Column(name = "is_requires_token_first_login")
-    private Boolean requiresTokenFirstLogin;
-
-    @Column(name = "is_biometric_validation")
-    private Boolean biometricValidation;
-
-    @Column(name = "is_token_login")
-    private Boolean tokenLogin;
 
 }

@@ -24,6 +24,7 @@ import com.agostinianas.demo.oauth.domain.service.JwtService;
 import com.agostinianas.demo.oauth.domain.service.RefreshTokenService;
 import com.agostinianas.demo.oauth.domain.service.UserService;
 import com.agostinianas.demo.oauth.mapper.UserMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -57,6 +58,7 @@ public class UserController {
     private final UserService userService;
     private final JwtService jwtService;
     private final RefreshTokenService refreshTokenService;
+    @Autowired
     private final ValidationService validation;
     private final BCryptPasswordEncoder passwordEncoder;
     
@@ -81,11 +83,11 @@ public class UserController {
     }
 
 
-    @PutMapping("/auth/user/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody @Valid UserRequest userRequest) {
-        UserResponse userResponse = userService.updateUser(id, userRequest);
-        return ResponseEntity.ok(userResponse);
-    }
+//    @PutMapping("/auth/user/{id}")
+//    public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody @Valid UserRequest userRequest) {
+//        UserResponse userResponse = userService.updateUser(id, userRequest);
+//        return ResponseEntity.ok(userResponse);
+//    }
 
 
     @PostMapping("/auth/user")
@@ -94,24 +96,24 @@ public class UserController {
     }
 
 
-    @GetMapping("/auth/users")
-    public ResponseEntity<Page<UserResponse>> getAllUsers(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id,asc") String[] sort,
-            HttpServletRequest request) {
-        try {
-            Sort.Direction direction = sort[1].equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
-            Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sort[0]));
-
-            Page<UserResponse> userResponses = userService.getAllUsersWithFilters(pageable, request);
-
-            return new ResponseEntity<>(userResponses, HttpStatus.OK);
-        } catch (Exception e) {
-            log.error("Erro ao buscar usuários", e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @GetMapping("/auth/users")
+//    public ResponseEntity<Page<UserResponse>> getAllUsers(
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "10") int size,
+//            @RequestParam(defaultValue = "id,asc") String[] sort,
+//            HttpServletRequest request) {
+//        try {
+//            Sort.Direction direction = sort[1].equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+//            Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sort[0]));
+//
+//            Page<UserResponse> userResponses = userService.getAllUsersWithFilters(pageable, request);
+//
+//            return new ResponseEntity<>(userResponses, HttpStatus.OK);
+//        } catch (Exception e) {
+//            log.error("Erro ao buscar usuários", e);
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
 
 

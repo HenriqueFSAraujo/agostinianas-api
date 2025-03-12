@@ -1,11 +1,15 @@
 package com.agostinianas.demo.oauth.config;
 
 
+
+import com.agostinianas.demo.core.domain.service.ValidationService;
 import com.agostinianas.demo.oauth.domain.repository.UserRepository;
 import com.agostinianas.demo.oauth.domain.service.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -38,6 +42,14 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private static final String[] SWAGGER_WHITELIST = {
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/webjars/**",
+            "/v3/api-docs/**",
+            "/swagger-ui/**"
+    };
 
     private final JwtAuthFilter jwtAuthFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -47,6 +59,12 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService(UserRepository iUserRepository){
         return new UserDetailsServiceImpl(iUserRepository);
     }
+
+    @Bean
+    public ValidationService validationService() {
+        return new ValidationService();
+    }
+
 
     @Bean
     public SecurityFilterChain authFilterChain(HttpSecurity http) throws Exception {

@@ -4,10 +4,15 @@ package com.agostinianas.demo.oauth.domain.mapper;
 
 import com.agostinianas.demo.oauth.domain.dto.RoleDTO;
 import com.agostinianas.demo.oauth.domain.entity.Role;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Component;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class RoleMapper {
 
     private RoleMapper() {
@@ -46,4 +51,6 @@ public class RoleMapper {
         }
         return dtos.stream().map(RoleMapper::toEntity).collect(Collectors.toList());
     }
+
 }
+

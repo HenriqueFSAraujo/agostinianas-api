@@ -1,4 +1,4 @@
-package com.montreal.core.domain.properties;
+package com.agostinianas.demo.core.domain.properties;
 
 import lombok.Getter;
 import lombok.Setter;

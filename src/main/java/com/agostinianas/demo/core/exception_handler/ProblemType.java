@@ -1,8 +1,10 @@
 package com.agostinianas.demo.core.exception_handler;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+
 public enum ProblemType {
 
     ERRO_DE_SISTEMA("/erro-de-sistema", "Erro de sistema"),
@@ -20,7 +22,7 @@ public enum ProblemType {
     private final String uri;
 
     ProblemType(String path, String title) {
-        this.uri = "https://api.montreal.com" + path;
+        this.uri = "https://api.msat.com" + path;
         this.title = title;
     }
 }

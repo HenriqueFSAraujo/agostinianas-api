@@ -30,6 +30,7 @@ import com.agostinianas.demo.oauth.domain.repository.impl.RefreshTokenRepository
 import com.agostinianas.demo.oauth.mapper.UserMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -61,7 +62,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final RefreshTokenRepository refreshTokenRepository;
-    private final ModelMapper modelMapper;
+    //private final ModelMapper modelMapper;
     private final CryptoComponent aes;
 
     private final RefreshTokenService refreshTokenService;
@@ -122,13 +123,19 @@ public class UserService {
 
 
     public UserResponse getUser() {
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetail = (UserDetails) authentication.getPrincipal();
         String usernameFromAccessToken = userDetail.getUsername();
         UserInfo user = userRepository.findByUsername(usernameFromAccessToken);
 
-        return modelMapper.map(user, UserResponse.class);
+        // Conversão manual de UserInfo para UserResponse
+        UserResponse userResponse = new UserResponse();
+        userResponse.setUsername(user.getUsername());
+        userResponse.setFullName(user.getFullName());
+        userResponse.setEmail(user.getEmail());
+        // Continue mapeando outros campos necessários aqui...
+
+        return userResponse;
     }
 
 //    public MessageResponse passwordRecoveryValidation(String key, List<String> objects) {
@@ -139,38 +146,38 @@ public class UserService {
 //        return MessageMapper.createMessageBuilder(msgType, details, this.addListObj(key, objects)).build();
 //    }
 
-    public UserResponse findByEmail(String email) {
-        return modelMapper.map(userRepository.findByEmail(email), UserResponse.class);
-    }
+//    public UserResponse findByEmail(String email) {
+//        return modelMapper.map(userRepository.findByEmail(email), UserResponse.class);
+//    }
 
-    public Page<UserResponse> getAllUsersWithFilters(Pageable pageable, HttpServletRequest request) {
-        List<Specification<UserInfo>> specs = new ArrayList<>();
-
-        request.getParameterMap().forEach((key, values) -> {
-            if (values != null && values.length > 0 && !key.equals("page") && !key.equals("size") && !key.equals("sort")) {
-                String value = values[0];
-
-                // Ajuste para "enabled" e tipo booleano
-                if (key.equals("enabled") || key.equals("isEnabled")) {
-                    Boolean enabledValue = Boolean.parseBoolean(value);
-                    specs.add((root, query, criteriaBuilder) ->
-                            criteriaBuilder.equal(root.get("isEnabled"), enabledValue));
-                } else {
-                    // Condição padrão para outros campos de texto
-                    specs.add((root, query, criteriaBuilder) ->
-                            criteriaBuilder.like(criteriaBuilder.lower(root.get(key)), "%" + value.toLowerCase() + "%"));
-                }
-            }
-        });
-
-        // Combine todas as especificações usando OR
-        Specification<UserInfo> combinedSpec = specs.stream()
-                .reduce(Specification::or)
-                .orElse(null);
-
-        Page<UserInfo> users = userRepository.findAll(combinedSpec, pageable);
-        return users.map(user -> modelMapper.map(user, UserResponse.class));
-    }
+//    public Page<UserResponse> getAllUsersWithFilters(Pageable pageable, HttpServletRequest request) {
+//        List<Specification<UserInfo>> specs = new ArrayList<>();
+//
+//        request.getParameterMap().forEach((key, values) -> {
+//            if (values != null && values.length > 0 && !key.equals("page") && !key.equals("size") && !key.equals("sort")) {
+//                String value = values[0];
+//
+//                // Ajuste para "enabled" e tipo booleano
+//                if (key.equals("enabled") || key.equals("isEnabled")) {
+//                    Boolean enabledValue = Boolean.parseBoolean(value);
+//                    specs.add((root, query, criteriaBuilder) ->
+//                            criteriaBuilder.equal(root.get("isEnabled"), enabledValue));
+//                } else {
+//                    // Condição padrão para outros campos de texto
+//                    specs.add((root, query, criteriaBuilder) ->
+//                            criteriaBuilder.like(criteriaBuilder.lower(root.get(key)), "%" + value.toLowerCase() + "%"));
+//                }
+//            }
+//        });
+//
+//        // Combine todas as especificações usando OR
+//        Specification<UserInfo> combinedSpec = specs.stream()
+//                .reduce(Specification::or)
+//                .orElse(null);
+//
+//        Page<UserInfo> users = userRepository.findAll(combinedSpec, pageable);
+//        return users.map(user -> modelMapper.map(user, UserResponse.class));
+//    }
 
 //    public MessageResponse passwordRecovery(String email) {
 //
@@ -313,55 +320,55 @@ public class UserService {
         );
     }
 
-    public UserResponse updateUser(Long userId, UserRequest userRequest) {
-        try {
-
-            UserInfo existingUser = userRepository.findFirstById(userId);
-            if (existingUser == null) {
-                throw new UserNotFoundException("Não é possível encontrar o registro com o identificador: " + userId);
-            }
-
-            if (!existingUser.getUsername().equals(userRequest.getUsername()) && userRepository.existsByUsername(userRequest.getUsername())) {
-                throw new ConflictUserException(String.format("Usuário com o username '%s' já existe", userRequest.getUsername()));
-            }
-
-            if (!existingUser.getEmail().equals(userRequest.getEmail()) && userRepository.existsByEmail(userRequest.getEmail())) {
-                throw new ConflictUserException(String.format("Usuário com o email '%s' já existe", userRequest.getEmail()));
-            }
-
-            Set<Role> userRoles = userRequest.getRoles().stream()
-                    .map(roleRequest -> {
-                        Role role = new Role();
-                        role.setId(roleRequest.getId());
-                        role.setName(roleRequest.getName());
-                        role.setBiometricValidation(roleRequest.getBiometricValidation());
-                        role.setRequiresTokenFirstLogin(roleRequest.getRequiresTokenFirstLogin());
-                        return role;
-                    })
-                    .collect(Collectors.toSet());
-
-            existingUser.setUsername(userRequest.getUsername());
-            existingUser.setFullName(userRequest.getFullName());
-            existingUser.setEmail(userRequest.getEmail());
-            existingUser.setEnabled(userRequest.isEnabled());
-            existingUser.setRoles(userRoles);
-            existingUser.setPasswordChangedByUser(existingUser.isPasswordChangedByUser());
-            existingUser.setCreatedByAdmin(existingUser.isCreatedByAdmin());
-            existingUser.setCompanyId(userRequest.getCompanyId());
-            existingUser.setCpf(userRequest.getCpf());
-            existingUser.setPhone(userRequest.getPhone());
-
-            // Save user
-            UserInfo updatedUser = userRepository.save(existingUser);
-            userRepository.refresh(updatedUser);
-
-            return modelMapper.map(updatedUser, UserResponse.class);
-
-        } catch (Exception e) {
-            log.error("Erro ao atualizar usuario ", e);
-            throw new InternalErrorException("Falha ao atualizar usuário");
-        }
-    }
+//    public UserResponse updateUser(Long userId, UserRequest userRequest) {
+//        try {
+//
+//            UserInfo existingUser = userRepository.findFirstById(userId);
+//            if (existingUser == null) {
+//                throw new UserNotFoundException("Não é possível encontrar o registro com o identificador: " + userId);
+//            }
+//
+//            if (!existingUser.getUsername().equals(userRequest.getUsername()) && userRepository.existsByUsername(userRequest.getUsername())) {
+//                throw new ConflictUserException(String.format("Usuário com o username '%s' já existe", userRequest.getUsername()));
+//            }
+//
+//            if (!existingUser.getEmail().equals(userRequest.getEmail()) && userRepository.existsByEmail(userRequest.getEmail())) {
+//                throw new ConflictUserException(String.format("Usuário com o email '%s' já existe", userRequest.getEmail()));
+//            }
+//
+//            Set<Role> userRoles = userRequest.getRoles().stream()
+//                    .map(roleRequest -> {
+//                        Role role = new Role();
+//                        role.setId(roleRequest.getId());
+//                        role.setName(roleRequest.getName());
+//                        role.setBiometricValidation(roleRequest.getBiometricValidation());
+//                        role.setRequiresTokenFirstLogin(roleRequest.getRequiresTokenFirstLogin());
+//                        return role;
+//                    })
+//                    .collect(Collectors.toSet());
+//
+//            existingUser.setUsername(userRequest.getUsername());
+//            existingUser.setFullName(userRequest.getFullName());
+//            existingUser.setEmail(userRequest.getEmail());
+//            existingUser.setEnabled(userRequest.isEnabled());
+//            existingUser.setRoles(userRoles);
+//            existingUser.setPasswordChangedByUser(existingUser.isPasswordChangedByUser());
+//            existingUser.setCreatedByAdmin(existingUser.isCreatedByAdmin());
+//            existingUser.setCompanyId(userRequest.getCompanyId());
+//            existingUser.setCpf(userRequest.getCpf());
+//            existingUser.setPhone(userRequest.getPhone());
+//
+//            // Save user
+//            UserInfo updatedUser = userRepository.save(existingUser);
+//            userRepository.refresh(updatedUser);
+//
+//            return modelMapper.map(updatedUser, UserResponse.class);
+//
+//        } catch (Exception e) {
+//            log.error("Erro ao atualizar usuario ", e);
+//            throw new InternalErrorException("Falha ao atualizar usuário");
+//        }
+//    }
 
     public UserResponse changePassword(Long userId, String newPassword) {
 
