@@ -1,4 +1,4 @@
-﻿package com.agostinianas.demo.msat.controller;
+package com.agostinianas.demo.msat.controller;
 
 import com.agostinianas.demo.msat.Services.FormService;
 import com.agostinianas.demo.msat.dto.FormDadosPessoaisDTO;
@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/forms")
@@ -17,10 +16,10 @@ public class FormController {
 
     private final FormService formService;
 
-    @GetMapping
-    public ResponseEntity<List<FormDadosPessoaisDTO>> getAllForms() {
-        return ResponseEntity.ok(formService.getAllForms());
-    }
+//    @GetMapping
+//    public ResponseEntity<List<FormDadosPessoaisDTO>> getAllForms() {
+//        return ResponseEntity.ok(formService.getAllForms());
+//    }
 
     @GetMapping("/form1/{id}")
     public ResponseEntity<Form> getFormById(@PathVariable Long id) {

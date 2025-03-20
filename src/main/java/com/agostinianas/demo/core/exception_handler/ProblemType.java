@@ -1,6 +1,6 @@
 package com.agostinianas.demo.core.exception_handler;
 
-import lombok.Builder;
+
 import lombok.Getter;
 
 @Getter

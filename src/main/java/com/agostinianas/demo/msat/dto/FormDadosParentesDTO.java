@@ -1,52 +1,20 @@
 package com.agostinianas.demo.msat.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FormDadosPessoaisDTO {
+public class FormDadosParentesDTO {
 
-    private Long id;
+     private Long id;
 
-    @JsonProperty("username")
-    private String fullName;
 
-    @JsonProperty("login")
-    private String login;
-
-    @JsonProperty("email")
-    private String email;
-
-    @JsonProperty("cpf")
-    private String cpf;
-
-    @JsonProperty("cpfScholarship")
-
-    private String cpfBolsista;
-
-    @JsonProperty("phone")
-    private String phone;
-
-    @JsonProperty("gender")
-    private String gender;
-
-    @JsonProperty("dateBirth")
-    private LocalDate dataNascimento;
-
-    @JsonProperty("deficiency")
-    private String pcd;
-
-    @JsonProperty("educasenso")
-    private String numEducasenso;
 
     @JsonProperty("parent1Cpf")
     private String parent1Cpf;
@@ -74,4 +42,5 @@ public class FormDadosPessoaisDTO {
 
     @JsonProperty ("residesWithBothParents" )
     private String residesWithBothParents;
+
 }

@@ -1,6 +1,6 @@
 package com.agostinianas.demo.core.config;
 
-import com.agostinianas.demo.oauth.domain.mapper.RoleMapper;
+
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

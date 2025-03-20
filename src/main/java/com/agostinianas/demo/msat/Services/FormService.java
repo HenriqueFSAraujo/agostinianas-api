@@ -1,11 +1,14 @@
-﻿package com.agostinianas.demo.msat.Services;
+package com.agostinianas.demo.msat.Services;
 
 import com.agostinianas.demo.msat.dto.FormDadosPessoaisDTO;
 import com.agostinianas.demo.msat.entity.Form;
 import com.agostinianas.demo.msat.repositories.FormRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +19,10 @@ import java.util.stream.Collectors;
 public class FormService {
 
     private final FormRepository formRepository;
+
     private final ModelMapper modelMapper;
+
+
 
 
     // METODOS PARA FORMULARIO DE DADOS PESSOAIS
@@ -38,6 +44,4 @@ public class FormService {
         return modelMapper.map(savedForm, FormDadosPessoaisDTO.class);
     }
 
-
-    // METODOS PARA FORMULARIO DE
 }

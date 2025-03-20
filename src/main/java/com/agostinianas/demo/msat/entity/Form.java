@@ -10,7 +10,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Table(name = "fomulario_alunos")
+@Table(name = "fomulario_dados_pessoais")
 @Entity
 @Getter
 @Setter
@@ -55,32 +55,7 @@ public class Form {
         @Column(name = "PCD")
         private String pcd;
 
-        @Column(name = "parent1Cpf")
-        private String parent1Cpf;
 
-        @Column (name = "parent1FullName" )
-        private String parent1FullName;
-
-        @Column (name = "parent1Phone" )
-        private String parent1Phone;
-
-        @Column (name = "parent1Phone" )
-        private String parent1MaritalStatus;
-
-        @Column(name = "parent1Cpf")
-        private String parent2Cpf;
-
-        @Column (name = "parent1FullName" )
-        private String parent2FullName;
-
-        @Column (name = "parent1Phone" )
-        private String parent2Phone;
-
-        @Column (name = "parent1Phone" )
-        private String parent2MaritalStatus;
-
-        @Column (name = "residesWithBothParents" )
-        private String residesWithBothParents;
 
 
 }
