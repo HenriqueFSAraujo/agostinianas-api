@@ -22,9 +22,6 @@ public class FormDadosParentes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "dados_parentes_id")
-    private FormDadosParentes dadosParentesId;
 
 
     @Column(name = "parent1Cpf")

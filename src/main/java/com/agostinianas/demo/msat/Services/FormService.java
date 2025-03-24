@@ -1,47 +1,52 @@
 package com.agostinianas.demo.msat.Services;
 
 import com.agostinianas.demo.msat.dto.FormDadosPessoaisDTO;
-import com.agostinianas.demo.msat.entity.Form;
+import com.agostinianas.demo.msat.dto.FormEnderecoCandidatoDTO;
+import com.agostinianas.demo.msat.entity.FormDadosPessoais;
+import com.agostinianas.demo.msat.entity.FormEnderecoCandidato;
+import com.agostinianas.demo.msat.mapper.FormDadosPessoaisMapper;
+import com.agostinianas.demo.msat.mapper.FormEnderecoCandidatoMapper;
+import com.agostinianas.demo.msat.repositories.FormEnderecoCandidatoRepository;
 import com.agostinianas.demo.msat.repositories.FormRepository;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class FormService {
 
-    private final FormRepository formRepository;
-
-    private final ModelMapper modelMapper;
 
 
+        private final FormRepository dadosPessoaisRepository;
+        private final FormEnderecoCandidatoRepository enderecoRepository;
+        private final FormDadosPessoaisMapper dadosPessoaisMapper;
+        private final FormEnderecoCandidatoMapper enderecoMapper;
 
+        public FormDadosPessoaisDTO createDadosPessoais(FormDadosPessoaisDTO dto) {
+            FormDadosPessoais entity = dadosPessoaisMapper.toEntity(dto);
+            entity.setId(null);
+            FormDadosPessoais saved = dadosPessoaisRepository.save(entity);
+            return dadosPessoaisMapper.toDto(saved);
+        }
 
-    // METODOS PARA FORMULARIO DE DADOS PESSOAIS
-    public List<FormDadosPessoaisDTO> getAllForms() {
-        return formRepository.findAll().stream()
-                .map(form -> modelMapper.map(form, FormDadosPessoaisDTO.class))
-                .collect(Collectors.toList());
+    public FormDadosPessoais getFormById(Long id) {
+        return dadosPessoaisRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Formulário de dados dos pais não encontrado com ID: " + id));
     }
 
-    public Form getFormById(Long id) {
-        Form form = formRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Formulário não encontrado com ID: " + id));
-        return modelMapper.map(form, Form.class);
+        public FormDadosPessoaisDTO updateDadosPessoais(Long id, FormDadosPessoaisDTO dto) {
+            FormDadosPessoais existing = dadosPessoaisRepository.findById(id)
+                    .orElseThrow(() -> new EntityNotFoundException("Dados pessoais não encontrados"));
+
+            existing.setFullName(dto.getFullName());
+            existing.setLogin(dto.getLogin());
+
+            FormDadosPessoais updated = dadosPessoaisRepository.save(existing);
+            return dadosPessoaisMapper.toDto(updated);
+        }
+
+
+
     }
 
-    public FormDadosPessoaisDTO createForm(Form formDTO) {
-        Form form = modelMapper.map(formDTO, Form.class);
-        Form savedForm = formRepository.save(form);
-        return modelMapper.map(savedForm, FormDadosPessoaisDTO.class);
-    }
-
-}

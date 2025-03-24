@@ -1,4 +1,4 @@
-package com.agostinianas.demo.core.config;
+package com.agostinianas.demo.msat.config;
 
 
 

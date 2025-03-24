@@ -16,7 +16,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Form {
+public class FormDadosPessoais {
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +27,9 @@ public class Form {
 
         @Column(name = "email")
         private String email;
+
+        @Column(name = "login")
+        private String login;
 
         @Column(name = "password")
         private String password;

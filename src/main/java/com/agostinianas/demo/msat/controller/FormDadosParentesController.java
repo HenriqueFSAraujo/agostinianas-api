@@ -17,14 +17,11 @@ public class FormDadosParentesController {
 
     private final FormDadosParentesService service;
 
-    @GetMapping
-    public ResponseEntity<List<FormDadosParentesDTO>> getAll() {
-        return ResponseEntity.ok(service.getAll());
-    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<FormDadosParentesDTO> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(service.getById(id));
+        return ResponseEntity.ok(service.findById(id));
     }
 
     @PostMapping
