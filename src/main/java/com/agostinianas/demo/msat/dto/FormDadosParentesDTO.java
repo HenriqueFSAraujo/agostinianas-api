@@ -40,5 +40,4 @@ public class FormDadosParentesDTO {
 
     @JsonProperty ("residesWithBothParents" )
     private String residesWithBothParents;
-
 }

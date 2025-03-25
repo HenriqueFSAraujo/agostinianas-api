@@ -49,30 +49,4 @@ public class FormDadosPessoaisDTO {
     @JsonProperty("educasenso")
     private String numEducasenso;
 
-    @JsonProperty("parent1Cpf")
-    private String parent1Cpf;
-
-    @JsonProperty ( "parent1FullName" )
-    private String parent1FullName;
-
-    @JsonProperty("parent1Phone" )
-    private String parent1Phone;
-
-    @JsonProperty ( "parent1MaritalStatus" )
-    private String parent1MaritalStatus;
-
-    @JsonProperty( "parent2Cpf")
-    private String parent2Cpf;
-
-    @JsonProperty ( "parent2FullName" )
-    private String parent2FullName;
-
-    @JsonProperty ( "parent2Phone" )
-    private String parent2Phone;
-
-    @JsonProperty ( "parent2MaritalStatus" )
-    private String parent2MaritalStatus;
-
-    @JsonProperty ("residesWithBothParents" )
-    private String residesWithBothParents;
 }
