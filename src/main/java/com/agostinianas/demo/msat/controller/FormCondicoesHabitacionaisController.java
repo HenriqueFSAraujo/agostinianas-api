@@ -1,0 +1,65 @@
+package com.agostinianas.demo.msat.controller;
+
+import com.agostinianas.demo.msat.Services.FormCondicoesHabitacionaisService;
+import com.agostinianas.demo.msat.dto.CondicoesHabitacionaisDTO;
+import com.agostinianas.demo.msat.entity.FormCondicoesHabitacionais;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/form-condicoes-habitacionais")
+public class FormCondicoesHabitacionaisController {
+
+    @Autowired
+    private FormCondicoesHabitacionaisService service;
+
+
+    @PostMapping
+    public ResponseEntity<FormCondicoesHabitacionais> create(@RequestBody CondicoesHabitacionaisDTO dto) {
+        FormCondicoesHabitacionais created = service.create(dto);
+        return ResponseEntity.ok(created);
+    }
+
+    // Retorna um registro pelo ID
+    @GetMapping("/{id}")
+    public ResponseEntity<FormCondicoesHabitacionais> getById(@PathVariable Long id) {
+        return service.getById(id)
+                .map(entity -> ResponseEntity.ok(entity))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // Retorna a lista de registros
+    @GetMapping
+    public ResponseEntity<List<FormCondicoesHabitacionais>> getAll() {
+        List<FormCondicoesHabitacionais> list = service.getAll();
+        return ResponseEntity.ok(list);
+    }
+
+    // Atualiza um registro existente
+    @PutMapping("/{id}")
+    public ResponseEntity<FormCondicoesHabitacionais> update(@PathVariable Long id, @RequestBody CondicoesHabitacionaisDTO dto) {
+        FormCondicoesHabitacionais updated = service.update(id, dto);
+        if (updated != null) {
+            return ResponseEntity.ok(updated);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Remove um registro pelo ID
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+}
