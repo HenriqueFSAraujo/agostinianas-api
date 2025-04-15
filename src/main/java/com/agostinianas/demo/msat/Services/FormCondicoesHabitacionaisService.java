@@ -45,10 +45,12 @@ public class FormCondicoesHabitacionaisService {
         return null;
     }
 
+
     public void delete(Long id) {
         repository.deleteById(id);
     }
 
+    // Método auxiliar para mapear DTO para Entity
     private FormCondicoesHabitacionais mapDtoToEntity(CondicoesHabitacionaisDTO dto) {
         FormCondicoesHabitacionais entity = new FormCondicoesHabitacionais();
         entity.setSituacaoImovel(dto.getSituacaoImovel());

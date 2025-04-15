@@ -30,7 +30,6 @@ public class FormCondicoesHabitacionaisController {
         return ResponseEntity.ok(created);
     }
 
-    // Retorna um registro pelo ID
     @GetMapping("/{id}")
     public ResponseEntity<FormCondicoesHabitacionais> getById(@PathVariable Long id) {
         return service.getById(id)
@@ -38,7 +37,7 @@ public class FormCondicoesHabitacionaisController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Retorna a lista de registros
+
     @GetMapping
     public ResponseEntity<List<FormCondicoesHabitacionais>> getAll() {
         List<FormCondicoesHabitacionais> list = service.getAll();
