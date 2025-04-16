@@ -1,8 +1,8 @@
-package com.agostinianas.demo.oauth.controller;
+package com.agostinianas.demo.msat.oauth.controller;
 
-import com.agostinianas.demo.msat.dto.LoginRequestDTO;
-import com.agostinianas.demo.msat.dto.LoginResponseDTO;
-import com.agostinianas.demo.oauth.service.AuthService;
+import com.agostinianas.demo.msat.oauth.dto.AuthRequest;
+import com.agostinianas.demo.msat.oauth.dto.AuthResponse;
+import com.agostinianas.demo.msat.oauth.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,8 +18,8 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO loginRequest) {
-        LoginResponseDTO response = authService.login(loginRequest);
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest loginRequest) {
+        AuthResponse response = authService.login(loginRequest);
         return ResponseEntity.ok(response);
     }
 }

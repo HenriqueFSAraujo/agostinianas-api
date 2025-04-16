@@ -57,8 +57,4 @@ public class FormDadosPessoais {
 
         @Column(name = "PCD")
         private String pcd;
-
-
-
-
 }

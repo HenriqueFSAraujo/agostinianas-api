@@ -3,6 +3,7 @@ package com.agostinianas.demo.msat.Services;
 import com.agostinianas.demo.msat.dto.CondicoesHabitacionaisDTO;
 import com.agostinianas.demo.msat.entity.FormCondicoesHabitacionais;
 import com.agostinianas.demo.msat.repositories.FormCondicoesHabitacionaisRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class FormCondicoesHabitacionaisService {
 
-    @Autowired
+
     private FormCondicoesHabitacionaisRepository repository;
 
 

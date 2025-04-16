@@ -1,4 +1,4 @@
-package com.agostinianas.demo.oauth.entity;
+package com.agostinianas.demo.msat.oauth.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,7 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Table(name = "user_login")
+@Table(name = "user_info")
 @Entity
 @Getter
 @Setter

@@ -1,13 +1,12 @@
-package com.agostinianas.demo.msat.dto;
+package com.agostinianas.demo.msat.oauth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class LoginResponseDTO {
+public class AuthResponse {
     private String user;
     private String token;
-
 
 }

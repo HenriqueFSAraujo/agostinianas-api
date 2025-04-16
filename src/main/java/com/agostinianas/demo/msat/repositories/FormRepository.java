@@ -2,8 +2,9 @@ package com.agostinianas.demo.msat.repositories;
 
 import com.agostinianas.demo.msat.entity.FormDadosPessoais;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
-
+@Repository
 public interface FormRepository extends JpaRepository<FormDadosPessoais, Long> {
 }

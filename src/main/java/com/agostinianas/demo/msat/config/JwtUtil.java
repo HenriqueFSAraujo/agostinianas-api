@@ -1,6 +1,7 @@
 package com.agostinianas.demo.msat.config;
 
-import com.agostinianas.demo.oauth.entity.UserInfo;
+import com.agostinianas.demo.msat.oauth.entity.UserInfo;
+import com.agostinianas.demo.msat.oauth.entity.UserLogin;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -13,7 +14,7 @@ public class JwtUtil {
 
     private final String SECRET_KEY = "123456";
 
-    public String generateToken(UserInfo user) {
+    public String generateToken(UserLogin user) {
         return Jwts.builder()
                 .setSubject(user.getUserName())
 
