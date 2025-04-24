@@ -1,9 +1,11 @@
 package com.agostinianas.demo.msat.oauth.service;
 
 import com.agostinianas.demo.msat.config.JwtUtil;
-import com.agostinianas.demo.msat.oauth.dto.AuthRequest;
-import com.agostinianas.demo.msat.oauth.dto.AuthResponse;
-import com.agostinianas.demo.msat.oauth.entity.UserLogin;
+import com.agostinianas.demo.msat.oauth.dto.UserLoginRequest;
+import com.agostinianas.demo.msat.oauth.dto.UserLoginResponse;
+
+import com.agostinianas.demo.msat.oauth.entity.UserInfo;
+
 import com.agostinianas.demo.msat.oauth.repository.UserLoginRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -19,8 +21,8 @@ public class AuthService {
     @Autowired
     private JwtUtil jwtUtil;
 
-    public AuthResponse login(AuthRequest request) {
-        UserLogin user = userLoginRepository.findByUserName(request.getUser())
+    public UserLoginResponse login(UserLoginRequest request) {
+        UserInfo user = userLoginRepository.findByUserName(request.getUserName())
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
         if (!user.getPassword().equals(request.getPassword())) {
@@ -29,10 +31,9 @@ public class AuthService {
 
         String token = jwtUtil.generateToken(user);
 
-
         user.setToken(token);
         userLoginRepository.save(user);
 
-        return new AuthResponse(user.getUserName(), token);
+        return new UserLoginResponse(user.getUserName(), user.getRole().getName(),user);
     }
 }

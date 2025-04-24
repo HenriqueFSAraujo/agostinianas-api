@@ -8,8 +8,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 
-@EntityScan("com.agostinianas.demo.msat.entity")
-@EnableJpaRepositories(basePackages = "com.agostinianas.demo.msat.oauth.repository")
 @SpringBootApplication
 public class DemoApplication {
 	public static void main(String[] args) {

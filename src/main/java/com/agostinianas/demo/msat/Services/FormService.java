@@ -9,11 +9,14 @@ import com.agostinianas.demo.msat.mapper.FormEnderecoCandidatoMapper;
 import com.agostinianas.demo.msat.repositories.FormEnderecoCandidatoRepository;
 import com.agostinianas.demo.msat.repositories.FormRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+
 public class FormService {
 
 

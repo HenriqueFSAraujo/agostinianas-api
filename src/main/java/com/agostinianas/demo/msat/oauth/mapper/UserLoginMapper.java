@@ -1,29 +1,39 @@
 package com.agostinianas.demo.msat.oauth.mapper;
 
+import com.agostinianas.demo.msat.oauth.RoleEnum;
 import com.agostinianas.demo.msat.oauth.dto.UserLoginRequest;
 import com.agostinianas.demo.msat.oauth.dto.UserLoginResponse;
-import com.agostinianas.demo.msat.oauth.entity.UserLogin;
+import com.agostinianas.demo.msat.oauth.entity.Role;
+import com.agostinianas.demo.msat.oauth.entity.UserInfo;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserLoginMapper {
 
-    public UserLogin toEntity(UserLoginRequest dto) {
-        UserLogin entity = new UserLogin();
-        entity.setName(dto.getName());
-        entity.setUserName(dto.getUserName());
-        entity.setPassword(dto.getPassword());
-        entity.setPhoto(dto.getPhoto());
-        entity.setToken(dto.getToken());
-        return entity;
+    public UserInfo toEntity(UserLoginRequest dto) {
+        if (dto == null) {
+            return null;
+        }
+
+        UserInfo userLogin = new UserInfo();
+        userLogin.setUserName(dto.getUserName());
+        userLogin.setPassword(dto.getPassword());
+        return userLogin;
     }
 
-    public UserLoginResponse toDto(UserLogin entity) {
-        UserLoginResponse dto = new UserLoginResponse();
-        dto.setId(entity.getId());
-        dto.setName(entity.getName());
-        dto.setUserName(entity.getUserName());
-        dto.setPhoto(entity.getPhoto());
-        return dto;
+    public UserLoginResponse toDto(UserInfo entity) {
+        if (entity == null) {
+            return null;
+        }
+
+        RoleEnum roleName = (entity.getRole() != null)
+                ? entity.getRole().getName()
+                : null;
+
+        return new UserLoginResponse(
+                entity.getUserName(),
+                roleName,
+                entity
+        );
     }
 }

@@ -19,7 +19,7 @@ public class FormController {
     private final FormService formService;
 
 
-    @GetMapping("/form1/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<FormDadosPessoais> getFormById(@PathVariable Long id) {
         return ResponseEntity.ok(formService.getFormById(id));
     }

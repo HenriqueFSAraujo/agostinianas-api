@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthRequest {
-    private String user;
+public class UserLoginRequest {
+
+
+    private String userName;
     private String password;
 }

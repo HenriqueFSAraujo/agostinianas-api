@@ -4,7 +4,6 @@ import aj.org.objectweb.asm.commons.Remapper;
 import com.agostinianas.demo.msat.oauth.dto.UserLoginRequest;
 import com.agostinianas.demo.msat.oauth.dto.UserLoginResponse;
 import com.agostinianas.demo.msat.oauth.entity.UserInfo;
-import com.agostinianas.demo.msat.oauth.entity.UserLogin;
 import com.agostinianas.demo.msat.oauth.mapper.UserLoginMapper;
 import com.agostinianas.demo.msat.oauth.repository.UserInfoRepository;
 import com.agostinianas.demo.msat.oauth.repository.UserLoginRepository;
@@ -36,15 +35,6 @@ public class UserLoginService {
     public Optional<UserLoginResponse> getById(Long id) {
         return userLoginRepository.findById(id)
                 .map(userLoginMapper::toDto);
-    }
-
-    public UserLoginResponse create(UserLoginRequest dto) {
-        userInfoRepository.findByUserName(dto.getUserName())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado: " + dto.getUserName()));
-
-        UserLogin userLogin = userLoginMapper.toEntity(dto);
-        UserLogin saved = userLoginRepository.save(userLogin);
-        return userLoginMapper.toDto(saved);
     }
 }
 

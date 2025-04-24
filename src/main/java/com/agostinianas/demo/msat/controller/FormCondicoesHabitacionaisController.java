@@ -44,7 +44,7 @@ public class FormCondicoesHabitacionaisController {
         return ResponseEntity.ok(list);
     }
 
-    // Atualiza um registro existente
+
     @PutMapping("/{id}")
     public ResponseEntity<FormCondicoesHabitacionais> update(@PathVariable Long id, @RequestBody CondicoesHabitacionaisDTO dto) {
         FormCondicoesHabitacionais updated = service.update(id, dto);
@@ -55,7 +55,6 @@ public class FormCondicoesHabitacionaisController {
         }
     }
 
-    // Remove um registro pelo ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
